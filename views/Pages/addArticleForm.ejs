@@ -1,0 +1,100 @@
+
+<%- include('../partials/Structure/head.ejs') %>
+<h1>Add Article Page<h1>
+
+  <form method="POST" action="/addArticle">
+<div class="container">
+  
+  <div class="input-group mb-3">  
+    <span class="input-group-text" id="basic-addon1">Name</span>
+    <input
+    required
+      name="name"
+      type="text"
+      class="form-control"      
+      aria-label="Username"
+      aria-describedby="basic-addon1"
+    />
+  </div>
+  <div class="input-group mb-3">
+    <span class="input-group-text">Category </span>
+<select class="form-control" name="shirts" id="shirt-colors">
+  <% categories.forEach((item)=>{%>
+    <option class="form-control" name="<%=item.name%>"><%=item.name%></option>
+    <%});%>
+
+</select>
+</div>
+  <div class="input-group mb-3">
+    <span class="input-group-text">Descripton</span>
+    <textarea required name="description" class="form-control" aria-label="With textarea"></textarea>
+  </div>
+  
+  <div class="input-group mb-3">
+    <span class="input-group-text">Added By</span>
+    <input
+    required
+    name="added_by" 
+     type="text"
+     class="form-control"     
+     aria-label="Added_by"
+     aria-describedby="basic-addon1"
+   />
+   </div>
+
+   <div class="input-group mb-3">
+    <span class="input-group-text">Author</span>
+    <input
+    required
+    name="author"
+     type="text"
+     class="form-control"
+     aria-label="author"
+     aria-describedby="basic-addon1"
+   />
+   </div>
+   <div class="input-group mb-3">
+    <span class="input-group-text">Date Added</span>
+    <input
+   required
+    name="date_added"
+     type="datetime-local"
+     class="form-control"    
+     aria-label="Date Added"
+     aria-describedby="basic-addon1"
+   />
+   </div>
+   <div class="input-group mb-3">
+    <span class="input-group-text">Image</span>
+    <input   
+    name="image"
+     type="file"
+     class="form-control"
+     placeholder="Image"
+     aria-label="image"
+     aria-describedby="basic-addon1"
+   />
+   </div>
+   <div class="input-group mb-3">
+    <span class="input-group-text">URL</span>
+    <input   
+    name="link"
+     type="url"
+     class="form-control"
+     placeholder="link"
+     aria-label="image"
+     aria-describedby="basic-addon1"
+   />
+   </div>
+    <input type="submit" value="Adauga Articol" class="btn btn-primary" ></input>    
+  </div>
+</div>
+</form>
+
+<% if(message != " ") { %>
+   <p><%=message%></p>
+<% } _%>
+
+
+
+<%- include('../partials/Structure/body.ejs') %>

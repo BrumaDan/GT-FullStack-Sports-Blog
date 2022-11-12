@@ -1,0 +1,45 @@
+<%- include('../partials/Structure/head.ejs') %>
+<section class="prompt">
+  <section class="prompt">
+    <h1>Sign in</h1>
+    <% if (hasMessages) { %>
+    <section class="messages">
+      <% messages.forEach(function(message) { %>
+      <p><%= message %></p>
+      <% }); %>
+    </section>
+    <% } %>
+}
+<form method="POST" action="/login">
+    <div class="container">
+      
+      <div class="input-group mb-3">  
+        <span class="input-group-text" id="basic-addon1">User Name</span>
+        <input
+        required
+          name="username"
+          type="text"
+          class="form-control"      
+          aria-label="Username"
+          aria-describedby="basic-addon1"
+        />
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text">Password </span>
+     <input
+     required
+     name="password"
+      type="password"
+      class="form-control"  
+      aria-label="Category"
+      aria-describedby="basic-addon1"
+    />
+    </div>
+        <input type="submit" value="Login" class="btn btn-primary"></input>    
+      </div>
+    </div>
+    </form>
+    <div>
+        <a href="/register">Do not have an account?</a>
+    </div>
+<%- include('../partials/Structure/body.ejs') %>

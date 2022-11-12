@@ -1,0 +1,14 @@
+<section class="todoapp">
+  <nav class="nav">
+    <% if (user) { %>
+    <ul>
+      <li class="user"><%= user.username %></li>
+      <li>
+        <form action="/logout" method="post">
+          <button class="logout" type="submit">Sign out</button>          
+        </form>
+      </li>
+    </ul>
+    <%} %>
+  </nav>
+</section>
