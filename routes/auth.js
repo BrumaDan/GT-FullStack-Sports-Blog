@@ -2,11 +2,28 @@ const router = require("./article");
 const {
   registerForm,
   loginUserForm,
-  User,
+  registerUser,
+  logOutUser,
 } = require("../db/models/user");
+const User = require("../db/UserSchema")
 var passport = require("passport");
 var LocalStrategy = require("passport-local");
 const bcrypt = require("bcrypt");
+
+router.get("/login", loginUserForm)
+
+router.post("/login", passport.authenticate("local", {
+  successRedirect: "/",
+  failureRedirect: "/login",
+  failureMessage: true,
+}));
+
+router.get("/logout", logOutUser);
+
+
+router.get("/register", registerForm);
+
+router.post("/register", registerUser);
 
 passport.use(
   new LocalStrategy(async function verify(username, password, cb) {
@@ -52,50 +69,6 @@ passport.deserializeUser(function (user, cb) {
   });
 });
 
-router.get("/login", loginUserForm)
-
-router.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/articles",
-    failureRedirect: "/login",
-    failureMessage: true,
-  })
-);
-
-router.post("/logout", function (req, res, next) {
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect("/");
-  });
-});
-
-
-router.get("/register", registerForm);
-
-router.post("/register", async (req, res, next) => {
-  var salt = 10;
-  bcrypt.hash(req.body.password, salt).then((hashedPassword) => {
-    User.create({
-      username: req.body.username,
-      password: hashedPassword,
-    })
-      .then((user) =>
-        req.login(user, function (err) {
-          if (err) {
-            return next(err);
-          }
-          res.redirect("/");
-        })
-      )
-      .catch((error) => {
-        console.log(error);
-        return next(error);
-      });
-  });
-});
 
 
 module.exports = router;

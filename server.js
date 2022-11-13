@@ -4,6 +4,11 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 require("dotenv").config();
 const passport = require("passport");
+const Article = require("./db/ArticleSchema");
+const  fs = require('fs');
+const path = require('path');
+const multer = require('multer');
+const getCategories = require("./db/models/category")
 
 //get routes 
 const articleRoutes = require("./routes/article");
@@ -13,8 +18,9 @@ const authRoutes = require("./routes/auth");
 const app = express();
 
 //middleware for parsing post methods body data
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
 
 //set passport configurations
 app.use(
@@ -25,7 +31,7 @@ app.use(
   })
 );
 app.use(passport.authenticate("session"));
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   var msgs = req.session.messages || [];
   res.locals.messages = msgs;
   res.locals.hasMessages = !!msgs.length;
@@ -48,8 +54,10 @@ res.render("Responses/404.ejs",{user:req.user})
 app.set("view engine", "ejs");
 app.set("views", "./views");
 
+
 //set server and database
 const port = 3000;
+
 
 //start server and connect to database
 app.listen(port, () => {

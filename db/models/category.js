@@ -1,7 +1,4 @@
-const mongoose = require("mongoose");
-const CategorySchema = require("../CategorySchema");
-const Category = mongoose.model("Category", CategorySchema);
-
+const Category = require("../CategorySchema");
 
 const getAllCategories = async () => {
     try{

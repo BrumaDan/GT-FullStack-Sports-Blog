@@ -11,10 +11,11 @@ const articleSchema = new Schema({
   author: String,
   img: {
     data: Buffer,
+    name:String,
     contentType: String,
   },
   link: String,
   rating: [{ type: Number }],
 });
 
-module.exports = articleSchema;
+module.exports = new mongoose.model("Article", articleSchema);

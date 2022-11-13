@@ -1,19 +1,18 @@
-const mongoose = require("mongoose");
-const articleSchema = require("../ArticleSchema");
+const Article = require("../ArticleSchema");
+const  fs = require('fs');
+const path = require('path');
 const getCategories = require("../models/category")
 
-const Article = mongoose.model("Article", articleSchema);
 
 const findAllArticles = async (req, res) => {
-  Article.find({})
-    .then((articles) => {
-      res.render("Pages/articles.ejs", { articles: articles ,user : req.user ? (req.user) : (false)});
-    })
-    .catch((error) => {
-      console.error("There was an error recovering articles", error);
+  try {
+    const articles = await Article.find({})
+    return articles
+  } catch (err){
+    console.error("There was an error recovering articles", error);
       res.render("../../views/Responses/500.ejs", error);
-    });
-};
+  }
+}
 
 const findOneArticle = async (req, res) => {
   // const article = await Article.findOne({ _id: req.query.id }).then(
@@ -31,29 +30,12 @@ const deleteArticle = async (req, res) => {
 };
 
 const addArticleFrom = async (req, res) => {
-  const availableCategories = await getCategories();
-  console.log(availableCategories)
-  res.render("Pages/addArticleForm.ejs", { data: {}, message: " ", categories:  availableCategories,user : req.user ? (req.user) : (false)});
+  const availableCategories = await getCategories();  
+  res.render("Pages/addArticleForm.ejs", { data: {}, message: " ", categories:  availableCategories,authStatus :req.isAuthenticated()});
 };
 
 const addArticle = async (req, res) => {
-  let data = req.body;
-  Article.create({
-    ...data,
-  })
-    .then(
-      res.render("Pages/addArticleForm.ejs", {
-        data: data,
-        message: "Article added successfully",
-      })
-    )
-    .catch((error) => {
-      console.error("There was an error adding the article", error);
-      res.render("Pages/addArticleForm.ejs", {
-        data: data,
-        message: error.message,
-      });
-    });
+ 
 };
 
 const updateArticle = async (req, res) => {
