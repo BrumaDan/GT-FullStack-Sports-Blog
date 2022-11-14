@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const Article = require("../db/ArticleSchema");
-const  fs = require('fs');
-const path = require('path');
-const multer = require('multer');
-const getCategories = require("../db/models/category")
+const fs = require("fs");
+const path = require("path");
+const multer = require("multer");
+const getCategories = require("../db/models/category");
 const {
   findAllArticles,
   findOneArticle,
@@ -17,63 +17,68 @@ const {
 //config multer middleware for getting images
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-      cb(null, __dirname +'/uploads')
+    cb(null, __dirname + "/uploads");
   },
-  filename: (req, file, cb) => {    
-      cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname))
-  }
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
 });
 
 const upload = multer({ storage: storage });
 
-
-router.post("/addArticle",upload.single('filename'), async (req,res) =>{     
-  const availableCategories = await getCategories();  
+router.post("/addArticle", upload.single("filename"), async (req, res) => {
+  const availableCategories = await getCategories();
   const image = {
-    data: fs.readFileSync(__dirname +"/uploads/" + req.file.filename),
-    contentType:req.file.mimetype
-}
-const data = {...req.body}
-      Article.create({
-        name: data.name,
-        description: data.description,
-        category: data.shirts,
-        date_added:data.date_added,
-        added_by: data.added_by,
-        comments: [],
-        author: data.author,
-        img: image,
-        link: data.link,
-        rating: [],                             
-      })
-        .then(() =>{          
-          res.render("Pages/addArticleForm.ejs", {
-            data: data,
-            message: "Article added successfully", 
-            categories: availableCategories
-          })}
-        )
-        .catch((error) => {
-          console.error("There was an error adding the article", error);
-          res.render("Pages/addArticleForm.ejs", {
-            data: data,
-            message: error.message,
-          });
-        })
-      })
+    data: fs.readFileSync(__dirname + "/uploads/" + req.file.filename),
+    contentType: req.file.mimetype,
+  };
+  const data = { ...req.body };
+  Article.create({
+    name: data.name,
+    description: data.description,
+    category: data.category,
+    date_added: Date.now(),
+    added_by: req.user.username,
+    comments: [],
+    author: data.author,
+    img: image,
+    link: data.link,
+    rating: [],
+  })
+    .then(() => {
+      res.render("Pages/addArticleForm.ejs", {
+        data: data,
+        message: "Article added successfully",
+        categories: availableCategories,
+        authStatus: req.isAuthenticated(),
+      });
+    })
+    .catch((error) => {
+      console.error("There was an error adding the article", error);
+      res.render("Pages/addArticleForm.ejs", {
+        data: data,
+        message: error.message,
+        authStatus: req.isAuthenticated(),
+      });
+    });
+});
 
-router.get("/", async (req,res) => {
-  const articles = await findAllArticles()
-  // console.log(articles)
-  console.log(typeof articles)
-  res.render("../views/Pages/index.ejs",{authStatus :req.isAuthenticated(), articles:articles})
-})
+router.get("/", async (req, res) => {
+  const articles = await findAllArticles();
+  res.render("../views/Pages/index.ejs", {
+    authStatus: req.isAuthenticated(),
+    articles: articles,
+  });
+});
 
-router.get("/articles", findAllArticles,);
+router.get("/articles", findAllArticles);
 
-router.get("/article/:id", findOneArticle,);
+router.get("/article/:id", findOneArticle);
 
-router.get("/addArticle", addArticleFrom,);
+router.get("/addArticle", addArticleFrom);
 
 router.delete("/article/:id", deleteArticle);
 
