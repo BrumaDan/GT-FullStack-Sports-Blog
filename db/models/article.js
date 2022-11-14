@@ -1,18 +1,17 @@
 const Article = require("../ArticleSchema");
-const  fs = require('fs');
-const path = require('path');
-const getCategories = require("../models/category")
-
+const fs = require("fs");
+const path = require("path");
+const getCategories = require("../models/category");
 
 const findAllArticles = async (req, res) => {
   try {
-    const articles = await Article.find({})
-    return articles
-  } catch (err){
+    const articles = await Article.find({});
+    return articles;
+  } catch (err) {
     console.error("There was an error recovering articles", error);
-      res.render("../../views/Responses/500.ejs", error);
+    res.render("../../views/Responses/500.ejs", error);
   }
-}
+};
 
 const findOneArticle = async (req, res) => {
   // const article = await Article.findOne({ _id: req.query.id }).then(
@@ -30,13 +29,16 @@ const deleteArticle = async (req, res) => {
 };
 
 const addArticleFrom = async (req, res) => {
-  const availableCategories = await getCategories();  
-  res.render("Pages/addArticleForm.ejs", { data: {}, message: " ", categories:  availableCategories,authStatus :req.isAuthenticated()});
+  const availableCategories = await getCategories();
+  res.render("Pages/addArticleForm.ejs", {
+    data: {},
+    message: " ",
+    categories: availableCategories,
+    authStatus: req.isAuthenticated(),
+  });
 };
 
-const addArticle = async (req, res) => {
- 
-};
+const addArticle = async (req, res) => {};
 
 const updateArticle = async (req, res) => {
   // const data = req.body;

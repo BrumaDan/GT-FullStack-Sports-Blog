@@ -46,7 +46,7 @@ app.use(express.static(__dirname + '/public/static'));
 app.use("/", authRoutes);
 app.use("/", articleRoutes);
 app.get("/*", (req, res) => { 
-res.render("Responses/404.ejs",{user:req.user})
+res.render("Responses/404.ejs",{authStatus:req.isAuthenticated()})
 });
 
 
