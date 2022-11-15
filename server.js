@@ -5,12 +5,12 @@ const session = require("express-session");
 require("dotenv").config();
 const passport = require("passport");
 const Article = require("./db/ArticleSchema");
-const  fs = require('fs');
-const path = require('path');
-const multer = require('multer');
-const getCategories = require("./db/models/category")
+const fs = require("fs");
+const path = require("path");
+const multer = require("multer");
+const getCategories = require("./db/models/category");
 
-//get routes 
+//get routes
 const articleRoutes = require("./routes/article");
 const authRoutes = require("./routes/auth");
 
@@ -20,7 +20,6 @@ const app = express();
 //middleware for parsing post methods body data
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
 
 //set passport configurations
 app.use(
@@ -40,24 +39,24 @@ app.use((req, res, next) => {
 });
 
 //use static files
-app.use(express.static(__dirname + '/public/static'));
+app.use(express.static(__dirname + "/public/static"));
 
 //set routes
 app.use("/", authRoutes);
 app.use("/", articleRoutes);
-app.get("/*", (req, res) => { 
-res.render("Responses/404.ejs",{authStatus:req.isAuthenticated()})
+app.get("/*", (req, res) => {
+  res.render("Responses/404.ejs", {
+    authStatus: req.isAuthenticated(),
+    user: "",
+  });
 });
-
 
 //set ejs
 app.set("view engine", "ejs");
 app.set("views", "./views");
 
-
 //set server and database
 const port = 3000;
-
 
 //start server and connect to database
 app.listen(port, () => {
@@ -66,6 +65,8 @@ app.listen(port, () => {
     .connect(process.env.MONGO_DB_URL)
     .then(console.log("Database connected"))
     .catch((error) =>
-      console.error(`Database connection encountered an error : ${error.message}`)
+      console.error(
+        `Database connection encountered an error : ${error.message}`
+      )
     );
 });
