@@ -104,8 +104,6 @@ dist
 .tern-port
 
 # article images
-uploads/
-routes/uploads/
-D:\Projects\GT FullStack JS\GT-FullStack-Sports-Blog\uploads/
-D:\Projects\GT FullStack JS\GT-FullStack-Sports-Blog\routes\uploads/
+./routes/uploads/*
+
 
