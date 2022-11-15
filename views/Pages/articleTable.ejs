@@ -1,0 +1,32 @@
+<%- include('../partials/Structure/head.ejs', {authStatus: authStatus,
+  user:user}) %>
+  <div class="table-responsive">
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Category</th>
+          <th scope="col">Link</th>
+          <th scope="colspan=2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% articles.forEach(function(article, index) { %>
+        <tr>
+          <th scope="row"><%=index+1 %></th>
+          <td><%=article.name %></td>
+          <td><%=article.description %></td>
+          <td><%=article.link %></td>
+          <td><a class="btn btn-primary" href="/update/article.id">Update</a></td>
+          <td>
+            <a class="btn btn-danger" href="/delete/<%=article.id %>">Delete</a>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  
+  <%- include('../partials/Structure/footer.ejs') %>
+  

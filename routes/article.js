@@ -9,9 +9,9 @@ const {
   findAllArticles,
   findOneArticle,
   deleteArticle,
-  addArticle,
   updateArticle,
   addArticleFrom,
+  findArticleByUser,
 } = require("../db/models/article");
 
 //config multer middleware for getting images
@@ -50,6 +50,7 @@ router.post("/addArticle", upload.single("filename"), async (req, res) => {
   })
     .then(() => {
       res.render("Pages/addArticleForm.ejs", {
+        user: req.user.username,
         data: data,
         message: "Article added successfully",
         categories: availableCategories,
@@ -59,6 +60,7 @@ router.post("/addArticle", upload.single("filename"), async (req, res) => {
     .catch((error) => {
       console.error("There was an error adding the article", error);
       res.render("Pages/addArticleForm.ejs", {
+        user: req.user.username,
         data: data,
         message: error.message,
         authStatus: req.isAuthenticated(),
@@ -68,11 +70,16 @@ router.post("/addArticle", upload.single("filename"), async (req, res) => {
 
 router.get("/", async (req, res) => {
   const articles = await findAllArticles();
+  let user = "";
+  req.isAuthenticated() ? (user = req.user.username) : (user = "");
   res.render("../views/Pages/index.ejs", {
+    user: user,
     authStatus: req.isAuthenticated(),
     articles: articles,
   });
 });
+
+router.get("/articles/:username", findArticleByUser);
 
 router.get("/articles", findAllArticles);
 
@@ -80,7 +87,7 @@ router.get("/article/:id", findOneArticle);
 
 router.get("/addArticle", addArticleFrom);
 
-router.delete("/article/:id", deleteArticle);
+router.get("/delete/:id", deleteArticle);
 
 router.patch("/article", updateArticle);
 

@@ -22,15 +22,32 @@ const findOneArticle = async (req, res) => {
   res.send(`Here is article with id: ${data}`);
 };
 const deleteArticle = async (req, res) => {
-  // Article.deleteOne({ _id: req.query.id })
-  // .then(res.send("Article was deleted successfully"))
-  // .catch((error) => console.error("There was an error deleting", error));
-  res.send(`Delete article with id: ${req.params.id}`);
+  Article.deleteOne({ _id: req.params.id })
+    .then((response) => res.redirect("/"))
+    .catch((error) => console.error("There was an error deleting", error));
+};
+
+const findArticleByUser = async (req, res) => {
+  try {
+    let user = req.params.username;
+    const articles = await Article.find({ added_by: user });
+    res.render("Pages/articleTable.ejs", {
+      articles: articles,
+      authStatus: req.isAuthenticated(),
+      user: user,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send("Something wen wrong!");
+  }
 };
 
 const addArticleFrom = async (req, res) => {
+  let user = "";
+  req.isAuthenticated() ? (user = req.user.username) : (user = "");
   const availableCategories = await getCategories();
   res.render("Pages/addArticleForm.ejs", {
+    user: user,
     data: {},
     message: " ",
     categories: availableCategories,
@@ -57,4 +74,5 @@ module.exports = {
   addArticle,
   addArticleFrom,
   updateArticle,
+  findArticleByUser,
 };

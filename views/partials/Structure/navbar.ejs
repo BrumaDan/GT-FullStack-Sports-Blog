@@ -12,10 +12,6 @@
         >          
         </img> Dan Sports Blog
       </a>
-      <!-- <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="/" class="nav-link px-2 link-dark">Home</a></li>       
-        <li><a href="#" class="nav-link px-2 link-dark">About</a></li>
-      </ul> -->
       <% if (authStatus) { %>
       <div class="flex-shrink-0 dropdown">
         <a
@@ -32,7 +28,10 @@
           />
         </a>
         <ul class="dropdown-menu text-small shadow">
-          <li><a class="dropdown-item" href="/addArticle">Add Article</a></li>        
+          <li><a class="dropdown-item" href="#"><%=user %></a></li>
+          <li><hr class="dropdown-divider" /></li>
+          <li><a class="dropdown-item" href="/addArticle">Add Article</a></li>
+          <li><a class="dropdown-item" href="/articles/<%=user %>">My Articles</a></li>
           <li><hr class="dropdown-divider" /></li>
           <li><a class="dropdown-item" href="/logout">Sign out</a></li>
         </ul>

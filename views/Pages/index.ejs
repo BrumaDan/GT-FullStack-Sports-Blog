@@ -1,4 +1,4 @@
-<%- include('../partials/Structure/head.ejs', {authStatus: authStatus}); %>
+<%- include('../partials/Structure/head.ejs', {authStatus: authStatus, user:user}) %>
 
 <main class="container">
   <div class="p-4 p-md-5 mb-4 rounded text-bg-dark">
@@ -31,8 +31,6 @@
         ></img>        
       </div>
     </div>
-
-    <!-- <hr class="featurette-divider" /> -->
     <%} else { %>
       <hr class="featurette-divider" />
     <div class="row featurette">
@@ -61,8 +59,6 @@
         </img>
       </div>
     </div>
-
-    <!-- <hr class="featurette-divider" /> -->
     <% } %>    
     <% }) %>
     <hr class="featurette-divider" />
