@@ -104,6 +104,6 @@ dist
 .tern-port
 
 # article images
-./routes/uploads/*
+/routes/uploads/*
 
 
