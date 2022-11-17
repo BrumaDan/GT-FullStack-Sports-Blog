@@ -3,14 +3,15 @@ const router = express.Router();
 const Article = require("../db/models/ArticleSchema");
 const fs = require("fs");
 const path = require("path");
+var passport = require("passport");
 const multer = require("multer");
 const getCategories = require("../controllers/category");
 const {
   findAllArticles,
-  findOneArticle,
   deleteArticle,
   updateArticle,
   addArticleFrom,
+  updateArticleForm,
   findArticleByUser,
 } = require("../controllers/article");
 
@@ -28,6 +29,25 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+router.get("/", async (req, res) => {
+  const articles = await findAllArticles();
+  let user = "";
+  req.isAuthenticated() ? (user = req.user.username) : (user = "");
+  res.render("../views/Pages/index.ejs", {
+    user: user,
+    authStatus: req.isAuthenticated(),
+    articles: articles,
+  });
+});
+
+router.get("/articles/:username", findArticleByUser);
+
+router.get("/addArticle", addArticleFrom);
+
+router.get("/delete/:id", deleteArticle);
+
+router.get("/update/:id", updateArticleForm);
 
 router.post("/addArticle", upload.single("filename"), async (req, res) => {
   const availableCategories = await getCategories();
@@ -68,27 +88,17 @@ router.post("/addArticle", upload.single("filename"), async (req, res) => {
     });
 });
 
-router.get("/", async (req, res) => {
-  const articles = await findAllArticles();
-  let user = "";
-  req.isAuthenticated() ? (user = req.user.username) : (user = "");
-  res.render("../views/Pages/index.ejs", {
-    user: user,
-    authStatus: req.isAuthenticated(),
-    articles: articles,
-  });
+router.post("/update/:id", upload.single("filename"), async (req, res) => {
+  const update = { ...req.body };
+  console.log("Update", update);
+  const filter = req.params.id;
+  console.log("Filter:", filter);
+  try {
+    await Article.findOneAndUpdate(filter, update);
+    res.redirect("/");
+  } catch (err) {
+    console.log(err);
+  }
 });
-
-router.get("/articles/:username", findArticleByUser);
-
-router.get("/articles", findAllArticles);
-
-router.get("/article/:id", findOneArticle);
-
-router.get("/addArticle", addArticleFrom);
-
-router.get("/delete/:id", deleteArticle);
-
-router.patch("/article", updateArticle);
 
 module.exports = router;
