@@ -33,8 +33,7 @@ const upload = multer({ storage: storage });
 
 router.get("/", async (req, res) => {
   const articles = await findAllArticles();
-  let user = "";
-  req.isAuthenticated() ? (user = req.user.username) : (user = "");
+  const user = req.isAuthenticated() ? req.user.username : "";
   res.render("../views/Pages/index.ejs", {
     user: user,
     authStatus: req.isAuthenticated(),
@@ -59,13 +58,14 @@ router.post("/addArticle", upload.single("filename"), async (req, res) => {
     data: fs.readFileSync(__dirname + "/uploads/" + req.file.filename),
     contentType: req.file.mimetype,
   };
+  const user = req.isAuthenticated() ? req.user.username : "";
   const data = { ...req.body };
   Article.create({
     name: data.name,
     description: data.description,
     category: data.category,
     date_added: Date.now(),
-    added_by: req.user.username,
+    added_by: user,
     comments: [],
     author: data.author,
     img: image,
@@ -73,8 +73,8 @@ router.post("/addArticle", upload.single("filename"), async (req, res) => {
     rating: [],
   })
     .then(() => {
-      fs.res.render("Pages/addArticleForm.ejs", {
-        user: req.user.username,
+      res.render("Pages/addArticleForm.ejs", {
+        user: user,
         data: data,
         message: "Article added successfully",
         categories: availableCategories,
@@ -84,7 +84,8 @@ router.post("/addArticle", upload.single("filename"), async (req, res) => {
     .catch((error) => {
       console.error("There was an error adding the article", error);
       res.render("Pages/addArticleForm.ejs", {
-        user: req.user.username,
+        user: user,
+        categories: availableCategories,
         data: data,
         message: error.message,
         authStatus: req.isAuthenticated(),
@@ -93,10 +94,6 @@ router.post("/addArticle", upload.single("filename"), async (req, res) => {
 });
 
 router.post("/update/:id", upload.single("filename"), async (req, res) => {
-  const update = { ...req.body };
-  console.log("Update", update);
-  const filter = req.params.id;
-  console.log("Filter:", filter);
   try {
     await Article.findOneAndUpdate(filter, update);
     res.redirect("/");
