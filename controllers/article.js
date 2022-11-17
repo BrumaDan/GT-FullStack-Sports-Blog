@@ -1,7 +1,7 @@
-const Article = require("../ArticleSchema");
+const Article = require("../db/models/ArticleSchema");
 const fs = require("fs");
 const path = require("path");
-const getCategories = require("../models/category");
+const getCategories = require("../controllers/category");
 
 const findAllArticles = async (req, res) => {
   try {
