@@ -3,14 +3,14 @@ const bcrypt = require("bcrypt");
 
 const loginUserForm = (req, res) =>
   req.isAuthenticated()
-    ? res.send("User is already logged in")
+    ? res.redirect("/")
     : res.render("../views/Pages/login.ejs", {
         authStatus: req.isAuthenticated(),
       });
 
 const registerForm = (req, res) =>
   req.isAuthenticated()
-    ? res.send("User is already logged in")
+    ? res.redirect("/")
     : res.render("../views/Pages/register.ejs", { message: false });
 
 const registerUser = async (req, res, next) => {

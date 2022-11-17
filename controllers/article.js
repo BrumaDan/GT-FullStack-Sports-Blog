@@ -13,21 +13,13 @@ const findAllArticles = async (req, res) => {
   }
 };
 
-const findOneArticle = async (req, res) => {
-  // const article = await Article.findOne({ _id: req.query.id }).then(
-  //   (response) => res.send(result)
-  // );
-  // res.send("One Article", article);
-  const data = req.params.id;
-  res.send(`Here is article with id: ${data}`);
-};
 const deleteArticle = async (req, res) => {
   Article.deleteOne({ _id: req.params.id })
     .then((response) => res.redirect("/"))
     .catch((error) => console.error("There was an error deleting", error));
 };
 
-const findArticleByUser = async (req, res) => {
+const findTableArticles = async (req, res) => {
   try {
     let user = req.params.username;
     const articles = await Article.find({ added_by: user });
@@ -35,6 +27,37 @@ const findArticleByUser = async (req, res) => {
       articles: articles,
       authStatus: req.isAuthenticated(),
       user: user,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send("Something wen wrong!");
+  }
+};
+const findArticleByCategory = async (req, res) => {
+  try {
+    const articles = await Article.find({ category: req.params.category });
+    let user;
+    req.isAuthenticated() ? (user = req.user.username) : (user = "");
+    res.render("../views/Pages/index.ejs", {
+      user: user,
+      authStatus: req.isAuthenticated(),
+      articles: articles,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send("Something wen wrong!");
+  }
+};
+
+const findArticleByUser = async (req, res) => {
+  try {
+    const articles = await Article.find({ user: req.params.user });
+    let user;
+    req.isAuthenticated() ? (user = req.user.username) : (user = "");
+    res.render("../views/Pages/index.ejs", {
+      user: user,
+      authStatus: req.isAuthenticated(),
+      articles: articles,
     });
   } catch (e) {
     console.log(e);
@@ -54,8 +77,6 @@ const addArticleFrom = async (req, res) => {
     authStatus: req.isAuthenticated(),
   });
 };
-
-const addArticle = async (req, res) => {};
 
 const updateArticleForm = async (req, res) => {
   try {
@@ -78,10 +99,10 @@ const updateArticleForm = async (req, res) => {
 
 module.exports = {
   findAllArticles,
-  findOneArticle,
   deleteArticle,
-  addArticle,
   addArticleFrom,
-  findArticleByUser,
+  findTableArticles,
   updateArticleForm,
+  findArticleByCategory,
+  findArticleByUser,
 };
