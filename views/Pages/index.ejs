@@ -39,7 +39,7 @@
           <%= article.name %>          
         </h2>
         <p class="blog-post-meta">
-          <%=article.date_added %> by <a href=""><%=article.author %></a> in
+          <%=article.date_added.toLocaleDateString() %>  by <a href=""><%=article.author %></a> in
           <a href=""><%=article.category %></a>
         </p>
         <p class="lead">
