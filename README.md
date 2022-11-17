@@ -15,16 +15,16 @@ The goal of this project was to create a blog where you can read the latest info
 
 ## Improvements
 
--Article rating system
--Article comments system
--Possibility to add video articles
--Viewers counter system
+- Article rating system
+- Article comments system
+- Possibility to add video articles
+- Viewers counter system
 
 ## Prerequisites
 
     1. NodeJS
     2. MongoDB
-    3. Visual Studio Code or Anothe Editor
+    3. Visual Studio Code or Another Editor
 
 ## Installation
 
