@@ -7,6 +7,7 @@ user:user}) %>
         <th scope="col">#</th>
         <th scope="col">Name</th>
         <th scope="col">Category</th>
+        <th scope="col">Description</th>
         <th scope="col">Link</th>
         <th scope="colspan=2">Actions</th>
       </tr>
@@ -16,10 +17,11 @@ user:user}) %>
       <tr>
         <th scope="row"><%=index+1 %></th>
         <td><%=article.name %></td>
+        <td><%=article.category %></td>
         <td><%=article.description %></td>
         <td><%=article.link %></td>
         <td>
-          <a class="btn btn-primary" href="/update/<%=article.id >%">Update</a>
+          <a class="btn btn-primary" href="/update/<%=article.id %>">Update</a>
         </td>
         <td>
           <a class="btn btn-danger" href="/delete/<%=article.id %>">Delete</a>

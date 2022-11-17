@@ -57,14 +57,23 @@ const addArticleFrom = async (req, res) => {
 
 const addArticle = async (req, res) => {};
 
-const updateArticle = async (req, res) => {
-  // const data = req.body;
-  // Article.updateOne({ ...data })
-  //   .then(res.send("Article updated successfully"))
-  //   .catch((error) =>
-  //     console.error("There was an error updating the article", error)
-  //   );
-  res.send("Updated one article");
+const updateArticleForm = async (req, res) => {
+  try {
+    const availableCategories = await getCategories();
+    const dbArticle = await Article.findOne({ _id: req.params.id });
+    res.render("../views/Pages/updateArticleForm.ejs", {
+      article: dbArticle,
+      authStatus: req.isAuthenticated(),
+      message: " ",
+      user: req.user.username,
+      categories: availableCategories,
+    });
+  } catch (error) {
+    res.render("../views/Responses/500.ejs", {
+      authStatus: req.isAuthenticated(),
+      user: req.user.username,
+    });
+  }
 };
 
 module.exports = {
@@ -73,6 +82,6 @@ module.exports = {
   deleteArticle,
   addArticle,
   addArticleFrom,
-  updateArticle,
   findArticleByUser,
+  updateArticleForm,
 };
