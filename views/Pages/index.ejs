@@ -13,7 +13,7 @@
       <div class="col-md-7">
         <h2 class="featurette-heading fw-normal lh-1"><%=article.name %></h2>
         <p class="blog-post-meta">
-          <%=article.date_added %> by <a href="/articles/user/<%=article.author %>"><%=article.author %></a> in
+          <%=article.date_added.toLocaleDateString() %> by <a href="/articles/user/<%=article.author %>"><%=article.author %></a> in
           <a href="/articles/category/<%=article.category %>"><%=article.category %></a>
         </p>
         <p class="lead">

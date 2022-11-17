@@ -36,8 +36,7 @@ const findTableArticles = async (req, res) => {
 const findArticleByCategory = async (req, res) => {
   try {
     const articles = await Article.find({ category: req.params.category });
-    let user;
-    req.isAuthenticated() ? (user = req.user.username) : (user = "");
+    const user = req.isAuthenticated() ? req.user.username : "";
     res.render("../views/Pages/index.ejs", {
       user: user,
       authStatus: req.isAuthenticated(),
@@ -52,8 +51,7 @@ const findArticleByCategory = async (req, res) => {
 const findArticleByUser = async (req, res) => {
   try {
     const articles = await Article.find({ user: req.params.user });
-    let user;
-    req.isAuthenticated() ? (user = req.user.username) : (user = "");
+    const user = req.isAuthenticated() ? req.user.username : "";
     res.render("../views/Pages/index.ejs", {
       user: user,
       authStatus: req.isAuthenticated(),
@@ -66,33 +64,37 @@ const findArticleByUser = async (req, res) => {
 };
 
 const addArticleFrom = async (req, res) => {
-  let user = "";
-  req.isAuthenticated() ? (user = req.user.username) : (user = "");
+  const user = req.isAuthenticated() ? req.user.username : "";
   const availableCategories = await getCategories();
-  res.render("Pages/addArticleForm.ejs", {
-    user: user,
-    data: {},
-    message: " ",
-    categories: availableCategories,
-    authStatus: req.isAuthenticated(),
-  });
+  if (req.isAuthenticated()) {
+    res.render("Pages/addArticleForm.ejs", {
+      user: user,
+      data: {},
+      message: " ",
+      categories: availableCategories,
+      authStatus: req.isAuthenticated(),
+    });
+  } else {
+    res.redirect("/login");
+  }
 };
 
 const updateArticleForm = async (req, res) => {
   try {
+    const user = req.isAuthenticated() ? req.user.username : "";
     const availableCategories = await getCategories();
     const dbArticle = await Article.findOne({ _id: req.params.id });
     res.render("../views/Pages/updateArticleForm.ejs", {
       article: dbArticle,
       authStatus: req.isAuthenticated(),
       message: " ",
-      user: req.user.username,
+      user: user,
       categories: availableCategories,
     });
   } catch (error) {
     res.render("../views/Responses/500.ejs", {
       authStatus: req.isAuthenticated(),
-      user: req.user.username,
+      user: user,
     });
   }
 };
