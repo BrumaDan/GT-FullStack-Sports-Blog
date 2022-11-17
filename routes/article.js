@@ -9,9 +9,10 @@ const getCategories = require("../controllers/category");
 const {
   findAllArticles,
   deleteArticle,
-  updateArticle,
   addArticleFrom,
   updateArticleForm,
+  findTableArticles,
+  findArticleByCategory,
   findArticleByUser,
 } = require("../controllers/article");
 
@@ -41,7 +42,10 @@ router.get("/", async (req, res) => {
   });
 });
 
-router.get("/articles/:username", findArticleByUser);
+router.get("/articles/category/:category", findArticleByCategory);
+
+router.get("/articles/table/:username", findTableArticles);
+router.get("/articles/user/:username", findArticleByUser);
 
 router.get("/addArticle", addArticleFrom);
 
@@ -69,7 +73,7 @@ router.post("/addArticle", upload.single("filename"), async (req, res) => {
     rating: [],
   })
     .then(() => {
-      res.render("Pages/addArticleForm.ejs", {
+      fs.res.render("Pages/addArticleForm.ejs", {
         user: req.user.username,
         data: data,
         message: "Article added successfully",

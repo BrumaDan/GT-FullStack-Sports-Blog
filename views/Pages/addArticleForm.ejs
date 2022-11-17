@@ -28,6 +28,7 @@
         <div class="input-group mb-3">
           <span class="input-group-text">Description</span>
           <textarea required name="description" class="form-control"></textarea>
+          
         </div>  
       </div>
       <div class="form-floating">
@@ -39,13 +40,14 @@
       <div class="form-floating">
         <div class="input-group mb-3">
           <span class="input-group-text">Image</span>
-          <input  type="file" required name="filename" class="form-control"></input>
+          <input  type="file" required name="filename" class="form-control"></input>          
         </div>  
+        <div class="messages mb-3">Please upload files in ".png" format</div>
       </div>
       <div class="form-floating">
         <div class="input-group mb-3">
           <span class="input-group-text">URL</span>
-          <input  type="url" required name="link" class="form-control"></input>
+          <input value="http://"  type="url" required name="link" class="form-control"></input>
         </div>  
       </div>
       <button class="w-100 btn btn-lg btn-outline-secondary" type="submit">Add Article</button>      

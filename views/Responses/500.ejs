@@ -1,5 +1,11 @@
 <%- include('../partials/Structure/head.ejs',{authStatus :
 authStatus,user:user}) %>
 <title>Error</title>
-<h1><%= error %></h1>
+
+<div class="p-4 p-md-5 mb-4 rounded text-bg-dark">
+  <div class="welcome-text mb-3 display-4 fst-italic">
+    <h1>Something went wrong</h1>
+    <h2><%= error %></h2>
+  </div>
+</div>
 <%- include('../partials/Structure/footer.ejs') %>
