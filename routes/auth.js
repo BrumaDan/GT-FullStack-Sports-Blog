@@ -1,25 +1,28 @@
-const router = require("./article");
+const express = require("express");
+const router = express.Router();
 const {
   registerForm,
   loginUserForm,
   registerUser,
   logOutUser,
-} = require("../db/models/user");
-const User = require("../db/UserSchema")
+} = require("../controllers/user");
+const User = require("../db/models/UserSchema");
 var passport = require("passport");
 var LocalStrategy = require("passport-local");
 const bcrypt = require("bcrypt");
 
-router.get("/login", loginUserForm)
+router.get("/login", loginUserForm);
 
-router.post("/login", passport.authenticate("local", {
-  successRedirect: "/",
-  failureRedirect: "/login",
-  failureMessage: true,
-}));
+router.post(
+  "/login",
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+    failureMessage: true,
+  })
+);
 
 router.get("/logout", logOutUser);
-
 
 router.get("/register", registerForm);
 
@@ -68,7 +71,5 @@ passport.deserializeUser(function (user, cb) {
     return cb(null, user);
   });
 });
-
-
 
 module.exports = router;

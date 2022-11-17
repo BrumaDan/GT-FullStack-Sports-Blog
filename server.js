@@ -4,11 +4,6 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 require("dotenv").config();
 const passport = require("passport");
-const Article = require("./db/ArticleSchema");
-const fs = require("fs");
-const path = require("path");
-const multer = require("multer");
-const getCategories = require("./db/models/category");
 
 //get routes
 const articleRoutes = require("./routes/article");

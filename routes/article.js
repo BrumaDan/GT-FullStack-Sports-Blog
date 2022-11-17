@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const Article = require("../db/ArticleSchema");
+const Article = require("../db/models/ArticleSchema");
 const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
-const getCategories = require("../db/models/category");
+const getCategories = require("../controllers/category");
 const {
   findAllArticles,
   findOneArticle,
@@ -12,7 +12,7 @@ const {
   updateArticle,
   addArticleFrom,
   findArticleByUser,
-} = require("../db/models/article");
+} = require("../controllers/article");
 
 //config multer middleware for getting images
 const storage = multer.diskStorage({
